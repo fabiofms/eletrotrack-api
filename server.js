@@ -44,11 +44,12 @@ app.post("/query",
 
     try {
         const { begin, end } = req.body;
-        query = `SELECT DATE_TRUNC('hour', date) AS hour,
+        query = `SELECT extract(hour from date) as hour, date, consumption
+          from (SELECT DATE_TRUNC('hour', date) AS date,
           sum(value) AS consumption
           FROM consumption
           WHERE date BETWEEN '${begin}' AND '${end}'
-          GROUP BY 1`
+          GROUP BY 1) as sel`
         const query_response = await pool.query(query);
         // console.log(query_response.rows[0]);
         res.json({rows: query_response.rows});
