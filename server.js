@@ -46,7 +46,7 @@ app.post("/query",
         res.json({rows: query_response.rows});
     } catch (err) {
         console.error(err.message);
-        res.status(500).json([{msg: 'Server Error'}]);
+        res.status(500).json([{msg: err.message}]);
     }
   }
 )
@@ -62,7 +62,7 @@ app.get("/:id/:value", async (req, res) => {
         res.json({rows: query_response.rows});
     } catch (err) {
         console.error(err.message);
-        res.status(500).json([{msg: 'Server Error'}]);
+        res.status(500).json([{msg: err.message}]);
     }
   }
 )
