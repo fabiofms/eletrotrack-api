@@ -28,9 +28,12 @@ app.use(helmet())
 // Query DB
 app.post("/query",
   [
-      check('query', 'Enter a valid query.')
-          .not()
-          .isEmpty(),
+      check('begin', 'Enter a valid begin date.')
+        .not()
+        .isEmpty(),
+      check('end', 'Enter a valid end date.')
+        .not()
+        .isEmpty(),
 
   ],
   async (req, res) => {
@@ -40,7 +43,12 @@ app.post("/query",
     }
 
     try {
-        const { query } = req.body;
+        const { begin, end } = req.body;
+        query = `SELECT DATE_TRUNC('hour', date) AS hour,
+          sum(value) AS consumption
+          FROM consumption
+          WHERE date BETWEEN ${begin} AND ${end}
+          GROUP BY 1`
         const query_response = await pool.query(query);
         // console.log(query_response.rows[0]);
         res.json({rows: query_response.rows});
