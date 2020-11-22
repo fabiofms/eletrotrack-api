@@ -47,7 +47,7 @@ app.post("/query",
         query = `SELECT DATE_TRUNC('hour', date) AS hour,
           sum(value) AS consumption
           FROM consumption
-          WHERE date BETWEEN ${begin} AND ${end}
+          WHERE date BETWEEN '${begin}' AND '${end}'
           GROUP BY 1`
         const query_response = await pool.query(query);
         // console.log(query_response.rows[0]);
